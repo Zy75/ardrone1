@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+
+import roslib; roslib.load_manifest('ardrone_tutorials')
+import rospy
+import numpy as np
+import cv2
+from sensor_msgs.msg import Image
+from drone_controller import BasicDroneController
+from cv_bridge import CvBridge
+
+count = 0
+
+class image_converter:
+
+  def __init__(self):
+    self.bridge = CvBridge()
+    self.image_sub = rospy.Subscriber("/camera/depth/image",Image,self.callback)
+
+  def callback(self,data):
+        global count
+       
+        cv_image = self.bridge.imgmsg_to_cv2(data)
+       
+
+        image = cv_image*50.0 
+        image = np.uint8(image)
+
+        ret,image = cv2.threshold(image,35,255,cv2.THRESH_TOZERO)
+        ret,image = cv2.threshold(image,140,255,cv2.THRESH_TOZERO_INV)
+        
+        image2 = image[60:380, 110:530] 
+
+        ret,image3 = cv2.threshold(image2,15,255,cv2.THRESH_BINARY)
+
+        mm2 = cv2.moments(image2)
+        mm3 = cv2.moments(image3)
+
+        if mm3['m00'] :
+          avg_depth = mm2['m00'] * 255.0 / mm3['m00']
+          cm_x = mm3['m10']  / mm3['m00']
+          cm_y = mm3['m01']  / mm3['m00']
+          print count, cm_x, cm_y, avg_depth
+        else:  
+          print "zero"
+
+       
+        count=count+1
+
+        cv2.imshow("wnd", image2)
+        cv2.waitKey(3)
+
+# Setup the application
+if __name__=='__main__':
+	import sys
+	# Firstly we setup a ros node, so that we can communicate with the other packages
+	rospy.init_node('ardrone1')
+        ic = image_converter()
+	# Now we construct our Qt Application and associated controllers and windows
+
+        cv2.namedWindow("wnd",cv2.WINDOW_AUTOSIZE)
+#	controller = BasicDroneController()
+        try:
+          rospy.spin()
+        except KeyboardInterrupt:
+          print "Shutting down"
+	# and only progresses to here once the application has been shutdown
+	rospy.signal_shutdown('Great Flying!')
+	sys.exit(status)

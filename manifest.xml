@@ -1,0 +1,13 @@
+<package>
+  <description brief="ardrone1">
+  </description>
+  <author>Original:Mike Hamer</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+
+  <depend package="ardrone_autonomy" />
+  
+</package>
+
+
