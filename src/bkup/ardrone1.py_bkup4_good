@@ -8,6 +8,7 @@ from sensor_msgs.msg import Image
 from drone_controller import BasicDroneController
 from cv_bridge import CvBridge
 
+
 class image_converter:
 
   def __init__(self):
@@ -23,19 +24,19 @@ class image_converter:
       if controller is not None:
   
         cv_image = self.bridge.imgmsg_to_cv2(data)
+       
 
-        image = cv_image*50.0   # temporarily scaling.  /camera/depth/image: distance in meter in float type. 
-        image = np.uint8(image)  #  python cv2 interface uses numpy array as primary format.
+        image = cv_image*50.0 
+        image = np.uint8(image)
 
-        ret,image = cv2.threshold(image,35,255,cv2.THRESH_TOZERO)    #  extract object in a range.
+        ret,image = cv2.threshold(image,35,255,cv2.THRESH_TOZERO)
         ret,image = cv2.threshold(image,140,255,cv2.THRESH_TOZERO_INV)
         
-        image2 = image[60:380, 110:530]  # take a region to get side wall out of image 
-                                       # image2: object color coressponds to distance, else black
+        image2 = image[60:380, 110:530] 
 
-        ret,image3 = cv2.threshold(image2,15,255,cv2.THRESH_BINARY)  # image3: object white, else black
+        ret,image3 = cv2.threshold(image2,15,255,cv2.THRESH_BINARY)
 
-        mm2 = cv2.moments(image2)  # moments() calculates center of mass and etc...  see manual.    
+        mm2 = cv2.moments(image2)
         mm3 = cv2.moments(image3)
 
         if mm3['m00'] :
@@ -43,11 +44,10 @@ class image_converter:
           cm_x = mm3['m10']  / mm3['m00']
           cm_y = mm3['m01']  / mm3['m00']
 
-          x = ( cm_x - 210.0 ) / 320.0    
+          x = ( cm_x - 210.0 ) / 320.0
           y = avg_depth / 50.0 - 1.5
-        # goal:  x = 0[m], y = 1.5[m] 
 
-          r = 1.0 * x + (x - self.x_old) * 32.0    # PID control ( only PD used ) 
+          r = 1.0 * x + (x - self.x_old) * 32.0
           p = 1.0 * y + (y - self.y_old) * 32.0
 
           controller.SetCommand( r, -p, 0.0, 0.0)
