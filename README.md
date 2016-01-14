@@ -1,4 +1,6 @@
 
+Ardrone 2.0 hovering project. Uses PID control to detect the position of drone by kinect sensor. Kinect is used as an external camera. I have succeeded in setting a fixed goal point and make the drone hover.
+
 ROS: indigo
 
 PC : ubuntu 14.04
@@ -7,9 +9,9 @@ kinect: kinect xbox 360 ( not v2)
 
 uses ardrone_autonomy ROS package
 
-problems:
+------------------------------------problems----------------------------------------------
 
-1. a little weak to disturbances.
+1. A little weak to disturbances.
 
 2. Average depth is unstable. That is, when drone is horizontally seen, only the nearest is detected. But when the drone has tilt, far point is also detected. 
 
