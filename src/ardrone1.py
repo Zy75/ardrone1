@@ -38,7 +38,7 @@ class image_converter:
         mm2 = cv2.moments(image2)  # moments() calculates center of mass and etc...  see manual.    
         mm3 = cv2.moments(image3)
 
-        if mm3['m00'] :
+        if mm3['m00'] :    # unless nothing is seen.
           avg_depth = mm2['m00'] * 255.0 / mm3['m00']
           cm_x = mm3['m10']  / mm3['m00']
           cm_y = mm3['m01']  / mm3['m00']
