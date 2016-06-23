@@ -41,7 +41,7 @@ class image_converter:
         if mm3['m00'] :    # unless nothing is seen.
           avg_depth = mm2['m00'] * 255.0 / mm3['m00']
           cm_x = mm3['m10']  / mm3['m00']
-          cm_y = mm3['m01']  / mm3['m00']
+          cm_y = mm3['m01']  / mm3['m00']  # cm_z is better name?
 
           x = ( cm_x - 210.0 ) / 320.0    
           y = avg_depth / 50.0 - 1.5
