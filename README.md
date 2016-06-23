@@ -13,9 +13,10 @@ uses ardrone_autonomy ROS package
 
 1. A little weak to disturbances.
 
-2. Average depth is unstable. That is, when drone is horizontally seen, only the nearest is detected. But when the drone is  tilted, far points are also detected. 
+2. depth is unstable. That is, when drone is horizontally seen, only the nearest is detected. But when the drone is  tilted, far points are also detected. 
 
-3. 
+3. By taking inner region of the image, the only object in depth image is the drone. ( I made side wall out of the region )
+It would be better if it was more generally applicable.
 
 -----------------------------------procedure---------------------------------------------
 
