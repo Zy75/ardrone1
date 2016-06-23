@@ -1,5 +1,5 @@
 
-Ardrone 2.0 hovering project. Uses PID control detecting the position of drone by kinect sensor. Kinect is used as an external camera. I have succeeded in setting a fixed goal point and make the drone hover.
+Ardrone 2.0 hovering project. Uses PID control detecting the position of drone by kinect sensor. Kinect is used as an external camera. I have succeeded in setting a fixed goal point and make the drone hover. One can move the drone by changing the goal point by program. 
 
 ROS: indigo
 
